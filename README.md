@@ -10,4 +10,8 @@ The dataset we constructed in Section 3.1 of our paper can be downloaded [here](
 
 ## Checkpoints
 
-Our trained models can be found [here](./checkpoints/ours.pth).
+Our trained model can be found [here](./checkpoints/ours.pth).
+
+## ONNX
+
+An ONNX version of our trained model can be found [here](./onnx/model.onnx), with inference script [here](./onnx/onnx_infer.py).
