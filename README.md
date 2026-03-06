@@ -1,5 +1,8 @@
 # Detecting Stable Diffusion Generated Images Using Frequency Artifacts: A Case Study on Disney-Style Art
 
+[![Live Demo](https://img.shields.io/badge/demo-live-blue)](https://zjbthomas.github.io/FreqAIDetector/)
+
+
 This is the repository for paper [Detecting Stable Diffusion Generated Images Using Frequency Artifacts: A Case Study on Disney-Style Art](https://ieeexplore.ieee.org/abstract/document/10221905) accepted to ICIP 2023.
 
 ![network structure](./github/network.png)
