@@ -1,4 +1,4 @@
-import cv2
+from PIL import Image
 import numpy as np
 
 import onnxruntime as ort
@@ -40,7 +40,7 @@ def dct_2d_np(x: np.ndarray, norm: str) -> np.ndarray:
     X2 = dct_1d_np(np.swapaxes(X1, -1, -2), norm=norm)
     return np.swapaxes(X2, -1, -2)
 
-def preprocess_rgb_to_dct_nchw(img_rgb: np.ndarray, size=(512, 512), log=True, factor=1.0) -> np.ndarray:
+def preprocess_rgb_to_dct_nchw(img: np.ndarray, log=True, factor=1.0) -> np.ndarray:
     """
     Matches your Albumentations+ToTensorV2+DCT pipeline:
     - Resize to 512x512
@@ -50,7 +50,6 @@ def preprocess_rgb_to_dct_nchw(img_rgb: np.ndarray, size=(512, 512), log=True, f
     - log(abs(dct)+1e-12) if log
     Returns NCHW float32
     """
-    img = cv2.resize(img_rgb, size, interpolation=cv2.INTER_LINEAR)
     img = img.astype(np.float32) / 255.0  # matches A.Normalize(mean=0,std=1)
     chw = np.transpose(img, (2, 0, 1))    # CHW
 
@@ -75,8 +74,10 @@ def main(image_path, model_path = "model.onnx"):
     sess = ort.InferenceSession(model_path, sess_options=sess_opts, providers=["CPUExecutionProvider"])
 
     # load image
-    img = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
-    img = preprocess_rgb_to_dct_nchw(img, size=(512, 512), log=True, factor=1.0)
+    img = Image.open(image_path).convert("RGB").resize((512, 512), resample=Image.BILINEAR)
+    img = np.array(img)
+
+    img = preprocess_rgb_to_dct_nchw(img, log=True, factor=1.0)
 
     # ort
     input_name = sess.get_inputs()[0].name
