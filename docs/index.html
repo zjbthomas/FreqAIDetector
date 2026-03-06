@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Image Detector Demo</title>
+  <title>FreqAIDetector Demo</title>
 
   <link rel="icon" type="image/png" href="./favicon.png">
 
@@ -136,7 +136,6 @@
     .hero h1 {
       margin: 0 0 12px;
       font-size: clamp(2.2rem, 5vw, 4rem);
-      line-height: 0.98;
       letter-spacing: -0.04em;
       max-width: 760px;
     }
@@ -467,6 +466,11 @@
       border-color: rgba(214,69,69,0.16);
     }
 
+    .status-box strong {
+      margin-right: 6px;
+      color: var(--text);
+    }
+
     .research-card {
       margin-top: 18px;
       padding: 18px 18px 16px;
@@ -565,22 +569,31 @@
 <body>
   <div class="page">
     <section class="hero">
-      <div class="hero-top">
-        <div class="badge">Demo</div>
 
-        <div class="hero-links">
-          <a class="hero-link" href="https://github.com/zjbthomas/FreqAIDetector" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
-          <a class="hero-link" href="https://ieeexplore.ieee.org/abstract/document/10221905" target="_blank" rel="noopener noreferrer">Paper</a>
-          <a class="hero-link" href="https://github.com/zjbthomas/Portfolio" target="_blank" rel="noopener noreferrer">My Portfolio</a>
-        </div>
-      </div>
-
-      <h1>AI Image Detector</h1>
+      <h1>Frequency-Based<br>AI Image Detector</h1>
       <p>
         Upload an image or try one of the sample examples below. This demo runs a frequency-domain image detector and predicts whether the image is a <strong>real image</strong> or an <strong>AI-generated image</strong>.
       </p>
 
     </section>
+
+    <section class="resources">
+      <a class="resource-link" href="https://github.com/zjbthomas/FreqAIDetector" target="_blank" rel="noopener noreferrer">
+        <strong>View the code</strong>
+        <span>Explore the repository and implementation details.</span>
+      </a>
+
+      <a class="resource-link" href="https://ieeexplore.ieee.org/abstract/document/10221905" target="_blank" rel="noopener noreferrer">
+        <strong>Read the paper</strong>
+        <span>See the motivation and method behind this detector.</span>
+      </a>
+
+      <a class="resource-link" href="https://github.com/zjbthomas/Portfolio" target="_blank" rel="noopener noreferrer">
+        <strong>Visit my portfolio</strong>
+        <span>Learn more about my other research, projects, and technical work.</span>
+      </a>
+    </section>
+
 
     <section class="layout">
       <div class="panel">
@@ -595,18 +608,18 @@
               <div class="dropzone-icon">↑</div>
               <strong>Drop image here</strong>
               <span>
-                Or click to select from your device. Supported formats: JPG, JPEG, PNG, WEBP, BMP, TIFF.
+                Or click to select from your device.
               </span>
             </div>
             <img id="preview" alt="Selected preview" />
           </div>
 
           <div class="actions">
-            <label class="upload-label" for="fileInput">Select image</label>
+            <label class="upload-label" for="fileInput">Select Image</label>
             <input type="file" id="fileInput" accept="image/*" />
             <button class="btn-primary" id="analyzeBtn" disabled>
               <span id="spinner" class="spinner hidden"></span>
-              Analyze image
+              Analyze Image
             </button>
             <button class="btn-secondary" id="clearBtn" disabled>Clear</button>
           </div>
@@ -622,14 +635,14 @@
             <div class="sample-card" data-src="fake.png">
               <img src="fake.png"/>
               <div class="sample-meta">
-                <strong>Fake Image • Stable Diffusion</strong>
+                <strong>Fake Image<br>Stable Diffusion</strong>
               </div>
             </div>
 
             <div class="sample-card" data-src="fake-dit.png">
               <img src="fake-dit.png"/>
               <div class="sample-meta">
-                <strong>Fake Image • DiT</strong>
+                <strong>Fake Image<br>Diffusion Transformer</strong>
               </div>
             </div>
           </div>
@@ -638,7 +651,7 @@
 
       <div class="panel">
         <div class="panel-inner">
-          <h2 class="section-title">Detection result</h2>
+          <h2 class="section-title">Detection Result</h2>
           
           <div class="result-card">
             <div class="result-state">
@@ -648,11 +661,11 @@
 
             <div class="result-main" id="resultMain">
               <strong id="resultLabel">No prediction yet</strong>
-              <span id="resultDescription">Select an image and click Analyze image to run the detector.</span>
+              <span id="resultDescription">Select an image and click Analyze Image to run the detector.</span>
             </div>
 
             <div class="status-box" id="statusBox">
-              Ready when you are.
+              <strong>Status:</strong> <span id="statusText">Ready when you are.</span>
             </div>
           </div>
 
@@ -664,6 +677,10 @@
         </div>
       </div>
     </section>
+
+    <p class="footer-note">
+      © 2026 Junbin Zhang
+    </p>
   </div>
 
   <script>
@@ -683,11 +700,12 @@
     const resultLabel = document.getElementById("resultLabel");
     const resultDescription = document.getElementById("resultDescription");
     const statusBox = document.getElementById("statusBox");
+    const statusText = document.getElementById("statusText");
 
     let selectedFile = null;
 
     function setStatus(message, isError = false) {
-      statusBox.textContent = message;
+      statusText.textContent = message;
       statusBox.className = isError ? "status-box error" : "status-box";
     }
 
